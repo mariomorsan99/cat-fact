@@ -1,0 +1,10 @@
+{
+
+    "/facts/*": {
+        "target": "https://cat-fact.herokuapp.com",
+        "secure": false,
+        "changeOrigin": true
+
+    }
+
+}

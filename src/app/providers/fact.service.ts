@@ -2,34 +2,41 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
+declare const gapi: any;
+
 @Injectable({
   providedIn: 'root'
 })
 export class FactService {
 
   corsHeaders:any;
+  respFact: any;
   constructor(private http: HttpClient) {
-
-  this.corsHeaders = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Access-Control-Allow-Origin': '/'
-    });
    }
 
-  urlFact: any = 'http://cat-fact.herokuapp.com/facts';
+  urlFact: any = '/facts/';
 
-  GetFacts() {
-    return this.http.get(this.urlFact).pipe(map(resp => {
+  GetFacts(token: any) {
+    const tokenRequest = token;
+    console.log(tokenRequest);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.get(this.urlFact, {headers}).pipe(map(resp => {
       console.log(resp);
+      this.respFact = resp;
     }));
 
   }
 
   public getFacts(): Observable<any> {
     const url = this.urlFact;
-   
     // Full updated data return this.http.get<any>('https://cat-fact.herokuapp.com/facts');
     return this.http.get<any>('https://cat-fact.herokuapp.com/facts', { headers: this.corsHeaders }); // static subset
   }
+
+
+  getLocalStorege() {
+   return localStorage.getItem('token');
+  }
+
 }
