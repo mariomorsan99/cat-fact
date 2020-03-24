@@ -1,10 +1,10 @@
- FACTS
+<h2>Cat-Facts</h2>
 <div class="row">
     <div class="col-6">
         <form [formGroup]="formsearch">
             <div class="input-group">
                 <div class="col-sm-2">
-                    <label class="col-form-label">B&uacute;squeda de:</label>
+                    <label class="col-form-label">B&uacute;squeda:</label>
                 </div>
                 <div class="col-sm-6" [ngClass]=" {'has-danger': !formsearch.get('searchControl').valid }">
                     <input type="text" formControlName="searchControl" form placeholder="Especifique el primer nombre " class="form-control">
@@ -14,7 +14,7 @@
 
     </div>
 </div>
-
+<br>
 <div class="row" *ngIf="mesageFacts!=null">
     <div class="col-6">
         <div class="alert alert-danger" role="alert">
@@ -23,7 +23,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-6">
+    <div class="col-12">
         <table class="table" *ngIf="responseArrayUsers!=null">
             <thead class="thead-dark">
                 <tr>
@@ -48,6 +48,5 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
 </div>
