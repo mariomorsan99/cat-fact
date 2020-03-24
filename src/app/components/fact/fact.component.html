@@ -1,28 +1,48 @@
  FACTS
-
 <div class="row">
     <div class="col-6">
-        <button type="button" id="btnGoogle" class="btn btn-googleplus" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fa fa-google-plus"></i> </button>
+        <form [formGroup]="formsearch">
+            <div class="input-group">
+                <div class="col-sm-2">
+                    <label class="col-form-label">B&uacute;squeda de:</label>
+                </div>
+                <div class="col-sm-6" [ngClass]=" {'has-danger': !formsearch.get('searchControl').valid }">
+                    <input type="text" formControlName="searchControl" form placeholder="Especifique el primer nombre " class="form-control">
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="row" *ngIf="mesageFacts!=null">
+    <div class="col-6">
+        <div class="alert alert-danger" role="alert">
+            {{mesageFacts}}
+        </div>
     </div>
 </div>
 <div class="row">
     <div class="col-6">
-
-
         <table class="table" *ngIf="responseArrayUsers!=null">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">AddedBy</th>
                     <th scope="col">Fact</th>
+                    <th scope="col">Votes</th>
                 </tr>
             </thead>
             <tbody *ngFor="let item of responseArrayUsers">
-                <tr *ngIf="item!= null">
+                <tr *ngIf="item!= null && item.user!= null">
                     <td>
                         {{item.user.name.first}} <br> {{item.user.name.last}}
                     </td>
                     <td>
-                        {{item.type}}
+                        {{item.text}}
+                    </td>
+
+                    <td>
+                        {{item.upvotes}}
                     </td>
 
                 </tr>

@@ -3,6 +3,7 @@ export class Facts {
     text: string;
     type: string;
     user: Users[];
+    upvotes: string;
 }
 
 export class Users {

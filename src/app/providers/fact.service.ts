@@ -36,7 +36,12 @@ export class FactService {
 
 
   getLocalStorege() {
-   return localStorage.getItem('token');
+   return localStorage.getItem('facts');
   }
+
+  setLocalStorage(data: any) {
+    return localStorage.setItem('facts', data);
+  }
+
 
 }
