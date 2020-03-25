@@ -23,6 +23,8 @@
         "@angular/platform-browser-dynamic": "~8.2.9",
         "@angular/router": "~8.2.9",
         "@ngrx/effects": "^9.0.0",
+        "@ngrx/entity": "^9.0.0",
+        "@ngrx/router-store": "^9.0.0",
         "@ngrx/store": "^9.0.0",
         "@ngrx/store-devtools": "^9.0.0",
         "bootstrap": "^4.4.1",

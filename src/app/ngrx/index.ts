@@ -1,3 +1,3 @@
-import { FactsEffects } from '../ngrx/facts.effects';
+import { FactsEffects } from '../effects/facts.effects';
 
 export const EffectsArray: any[] = [ FactsEffects ];

@@ -12,3 +12,12 @@ export const cargarUsuariosError = createAction(
     '[Usuarios] Cargar Usuarios Error',
     props<{ payload: any }>()
 );
+
+
+export const filtrarUsuariosSuccess = createAction(
+    '[Usuarios] filtra Usuarios Success',
+    props<{ key: string, usuarios: any }>()
+);
+
+
+export const loadUsers = createAction('[Facts] Load Users', props<{  predicate: string, usuarios: any  }>());

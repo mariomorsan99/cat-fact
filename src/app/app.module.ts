@@ -17,10 +17,12 @@ import { FactService } from './providers/fact.service';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 
 import { environment } from 'src/environments/environment';
 import { appReducers } from './app.reducer';
 import { EffectsArray } from './ngrx';
+
 
 
 @NgModule({
@@ -40,6 +42,7 @@ import { EffectsArray } from './ngrx';
     ReactiveFormsModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot( EffectsArray ),
+    StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

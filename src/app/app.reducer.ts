@@ -1,7 +1,6 @@
 import { Facts } from 'src/app/models/facts-model';
 import { ActionReducer, ActionReducerMap } from '@ngrx/store';
-import { todoReducer, filtroReducer, factsReducer, FactsInitalState } from './ngrx/counter.reducer';
-import { UsuariosState, usuariosReducer } from './ngrx/facts.reducer';
+import { UsuariosState, usuariosReducer, UsuariosStateEntity, entityReducer } from './reducer/facts.reducer';
 
 // export interface AppState {
 //     todos: Facts[];
@@ -11,11 +10,16 @@ import { UsuariosState, usuariosReducer } from './ngrx/facts.reducer';
 
 export interface AppState {
     usuarios: UsuariosState,
+    entity: UsuariosStateEntity
  }
  
 export const appReducers: ActionReducerMap<AppState> = {
     usuarios: usuariosReducer,
+    entity: entityReducer
+
  }
+
+
 
 
 // export const appReducers:ActionReducerMap<AppState> = {
