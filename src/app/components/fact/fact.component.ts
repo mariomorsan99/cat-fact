@@ -3,7 +3,14 @@ import { FactService } from '../../providers/fact.service';
 import { Facts } from 'src/app/models/facts-model';
 import { FormGroup, FormControl, Validator, FormControlName, Validators, FormArray } from '@angular/forms';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { State, Store } from '@ngrx/store';
+import * as actions from '../../ngrx/counter.actions';
+import { AppState } from '../../app.reducer';
+import { cargarUsuarios } from 'src/app/ngrx/facts.actions';
 declare const gapi: any;
+
+
+
 
 @Component({
   selector: 'app-fact',
@@ -25,8 +32,18 @@ export class FactComponent implements OnInit {
   formsearch: FormGroup;
   public keyboardData: any;
   mesageFacts: any = null;
-  constructor(private factService: FactService) { 
 
+
+  facts: Facts[] = [];
+
+  constructor(private factService: FactService, private store: Store<AppState>) { 
+
+    // this.store.select('todos').subscribe( state => {
+    //   console.log(state);
+    // });
+
+  
+    
     this.formsearch = new FormGroup({
       'searchControl': new FormControl('', [Validators.required, Validators.pattern('[A-Za-z0-9]{1,25}')]),
     });
@@ -34,15 +51,22 @@ export class FactComponent implements OnInit {
       this.keyboardData = data;
       this.findFact();
     });
+  }
 
-   
-  
+  incrementar() {
+    this.store.dispatch(actions.increment());
+  }
+
+  decrementar() {
+    this.store.dispatch( actions.decrement());
   }
 
   ngOnInit() {
-    this.factService.GetFacts(this.token).subscribe((resp: any) => { 
-      this.resultFacts = this.factService.respFact.all;
-      this.fact = this.factService.respFact.all;
+
+    this.store.select('usuarios').subscribe( ({ users, loading, error }) => {
+      this.facts = users;
+      this.resultFacts = this.facts;
+      this.fact = this.facts;
       this.fact.forEach(element => {
         this.factItems = new Facts();
         this.factItems.text = element.text;
@@ -50,10 +74,29 @@ export class FactComponent implements OnInit {
         this.factItems.upvotes = element.upvotes;
         this.responseArrayUsers.push(this.factItems);
      });
-
       this.factService.setLocalStorage(JSON.stringify(this.responseArrayUsers));
-      console.log( this.responseArrayUsers);
-     });
+      console.log( this.facts);
+    });
+
+    this.store.dispatch( cargarUsuarios() );
+
+    
+
+    // this.factService.GetFacts().subscribe((resp: any) => { 
+    //   this.resultFacts = this.factService.respFact.all;
+    //   this.fact = this.factService.respFact.all;
+    //   this.fact.forEach(element => {
+    //     this.factItems = new Facts();
+    //     this.factItems.text = element.text;
+    //     this.factItems.user = element.user;
+    //     this.factItems.upvotes = element.upvotes;
+    //     this.responseArrayUsers.push(this.factItems);
+    //  });
+
+    //   this.store.dispatch(actions.crear({result: this.responseArrayUsers}));
+    //   this.factService.setLocalStorage(JSON.stringify(this.responseArrayUsers));
+    //   console.log( this.responseArrayUsers);
+    //  });
   }
 
   findFact() {

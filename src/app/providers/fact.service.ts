@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Action } from '@ngrx/store';
 
 declare const gapi: any;
 
@@ -17,23 +18,18 @@ export class FactService {
 
   urlFact: any = '/facts/';
 
-  GetFacts(token: any) {
-    const tokenRequest = token;
-    console.log(tokenRequest);
+  GetFacts()  {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.get(this.urlFact, {headers}).pipe(map(resp => {
-      console.log(resp);
-      this.respFact = resp;
-    }));
-
+    return this.http.get(this.urlFact, {headers}).pipe(map(resp => resp['all']));
   }
 
-  public getFacts(): Observable<any> {
-    const url = this.urlFact;
-    // Full updated data return this.http.get<any>('https://cat-fact.herokuapp.com/facts');
-    return this.http.get<any>('https://cat-fact.herokuapp.com/facts', { headers: this.corsHeaders }); // static subset
+  getUsers() {
+    return this.http.get(`${ this.urlFact }`)
+          .pipe(
+            map( resp => resp)
+          );
   }
-
+  
 
   getLocalStorege() {
    return localStorage.getItem('facts');
