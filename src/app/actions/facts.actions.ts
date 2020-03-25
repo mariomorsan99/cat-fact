@@ -1,23 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 import { Facts } from '../models/facts-model';
 
-export const cargarUsuarios = createAction('[Usuarios] Cargar Usuarios');
+export const cargarFacts = createAction('[Facts] Cargar Facts');
 
-export const cargarUsuariosSuccess = createAction(
-    '[Usuarios] Cargar Usuarios Success',
-    props<{ usuarios: any }>()
+export const cargarFactsSuccess = createAction(
+    '[Facts] Cargar Facts Success',
+    props<{ facts: any }>()
 );
 
-export const cargarUsuariosError = createAction(
-    '[Usuarios] Cargar Usuarios Error',
+export const cargarFactsError = createAction(
+    '[Facts] Cargar Facts Error',
     props<{ payload: any }>()
 );
 
-
-export const filtrarUsuariosSuccess = createAction(
-    '[Usuarios] filtra Usuarios Success',
-    props<{ key: string, usuarios: any }>()
-);
-
-
-export const loadUsers = createAction('[Facts] Load Users', props<{  predicate: string, usuarios: any  }>());
+export const loadFacts = createAction('[Filter Facts] filtra los facts por el fistname', props<{  predicate: string, facts: any  }>());

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FactService } from '../providers/fact.service';
-import * as usuariosActions from '../actions/facts.actions';
+import * as factsActions from '../actions/facts.actions';
 
 import { tap, mergeMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -15,33 +15,17 @@ export class FactsEffects {
 
     cargarUsuarios$ = createEffect(
         () => this.actions$.pipe(
-            ofType( usuariosActions.cargarUsuarios ),
+            ofType( factsActions.cargarFacts ),
             mergeMap(
                 () => this.factService.GetFacts()
                     .pipe(
-                        map( users =>
-                             usuariosActions.cargarUsuariosSuccess({usuarios: users}) 
+                        map( fact =>
+                            factsActions.cargarFactsSuccess({facts: fact}) 
                              ),
-                        catchError( err => of(usuariosActions.cargarUsuariosError({ payload: err })) )
+                        catchError( err => of(factsActions.cargarFactsError({ payload: err })) )
                     )
             )
         )
     );
-
-    // loadUsers$ = createEffect(
-    //     () => this.actions$.pipe(
-    //         ofType( usuariosActions.loadUsers ),
-    //         mergeMap(
-    //             () => this.factService.GetFacts()
-    //                 .pipe(
-    //                     map( users =>
-    //                          usuariosActions.loadUsers() 
-    //                          ),
-    //                     catchError( err => of(usuariosActions.cargarUsuariosError({ payload: err })) )
-    //                 )
-    //         )
-    //     )
-    // );
-
 
 }

@@ -5,12 +5,9 @@ import { FormGroup, FormControl, Validator, FormControlName, Validators, FormArr
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { State, Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import { cargarUsuarios } from 'src/app/actions/facts.actions';
-import { loadUsers } from '../../actions/facts.actions';
+import { cargarFacts } from 'src/app/actions/facts.actions';
+import { loadFacts } from '../../actions/facts.actions';
 declare const gapi: any;
-
-
-
 
 @Component({
   selector: 'app-fact',
@@ -32,18 +29,9 @@ export class FactComponent implements OnInit {
   formsearch: FormGroup;
   public keyboardData: any;
   mesageFacts: any = null;
-
-
   facts: Facts[] = [];
 
   constructor(private factService: FactService, private store: Store<AppState>) { 
-
-    // this.store.select('todos').subscribe( state => {
-    //   console.log(state);
-    // });
-
-  
-    
     this.formsearch = new FormGroup({
       'searchControl': new FormControl('', [Validators.required, Validators.pattern('[A-Za-z0-9]{1,25}')]),
     });
@@ -53,10 +41,8 @@ export class FactComponent implements OnInit {
     });
   }
 
-  
-
   ngOnInit() {
-    this.store.select('usuarios').subscribe( ({ users, loading, error }) => {
+    this.store.select('facts').subscribe( ({ users, loading, error }) => {
       this.facts = users;
       this.resultFacts = this.facts;
       this.fact = this.facts;
@@ -67,24 +53,19 @@ export class FactComponent implements OnInit {
         this.factItems.upvotes = element.upvotes;
         this.responseArrayUsers.push(this.factItems);
      });
-      this.factService.setLocalStorage(JSON.stringify(this.responseArrayUsers));
-      console.log( this.facts);
     });
-    this.store.dispatch( cargarUsuarios() );
+    this.store.dispatch( cargarFacts() );
   }
 
   findFact() {
     this.mesageFacts = null;
-    console.log(this.keyboardData);
-    this.store.dispatch(loadUsers({usuarios: this.facts, predicate: this.keyboardData}));
+    this.store.dispatch(loadFacts({facts: this.facts, predicate: this.keyboardData}));
     this.store.select('entity').subscribe(result => {
-      console.log(result);
       this.mesageFacts = null;
       if ( result.entities != null) {
         this.responseArrayUsersResult = [];
         this.responseArrayUsersFilter = [];
         this.responseArrayUsersResult.push(result.entities);
-
         this.responseArrayUsersResult[0].forEach(element => {
           this.factItems = new Facts();
           this.factItems.text = element.text;
@@ -92,8 +73,6 @@ export class FactComponent implements OnInit {
           this.factItems.upvotes = element.upvotes;
           this.responseArrayUsersFilter.push(this.factItems);
        });
-
-        console.log(this.responseArrayUsersFilter);
         if (this.responseArrayUsersFilter.length > 0) {
            this.responseArrayUsers = this.responseArrayUsersFilter;
            this.mesageFacts = null;
@@ -103,8 +82,6 @@ export class FactComponent implements OnInit {
             }
       }
     });
-
-    console.log(this.responseArrayUsers);
   }
 
 }

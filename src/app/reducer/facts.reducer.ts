@@ -1,25 +1,23 @@
 import { createReducer, on } from '@ngrx/store';
-import { cargarUsuarios, cargarUsuariosError, cargarUsuariosSuccess, filtrarUsuariosSuccess, loadUsers } from '../actions/facts.actions';
+import { cargarFacts, cargarFactsError, cargarFactsSuccess,  loadFacts } from '../actions/facts.actions';
 import { Facts, Users, Name } from '../models/facts-model';
 import { EntityState, EntityAdapter, createEntityAdapter} from '@ngrx/entity';
 
-export interface UsuariosState  {
+export interface FactsState  {
     users: Facts[],
     loaded: boolean,
     loading: boolean,
-    error: any,
-    keys: string
+    error: any
 }
 
-export const usuariosInitialState: UsuariosState = {
+export const usuariosInitialState: FactsState = {
     users  : [],
     loaded : false,
     loading: false,
-    error  : null,
-    keys: ''
+    error  : null
 }
 
-export interface UsuariosStateEntity extends EntityState<Facts> {
+export interface FactsStateEntity extends EntityState<Facts> {
     first: string,
     loaded: boolean,
     loading: boolean,
@@ -28,7 +26,7 @@ export interface UsuariosStateEntity extends EntityState<Facts> {
 
 export const factsAdapter: EntityAdapter<Facts> = createEntityAdapter<Facts>();
 
-export const defaultFacts: UsuariosStateEntity= {
+export const defaultFacts: FactsStateEntity= {
      ids: [ ],
      entities: { },
      first: null,
@@ -43,34 +41,28 @@ export const initialState = factsAdapter.getInitialState(defaultFacts);
 const _entityReducer = createReducer(
     initialState,
 
-    on( loadUsers, (state, { predicate , usuarios }) => ({ 
+    on( loadFacts, (state, { predicate , facts }) => ({ 
         ...state, 
         loading: false,
         loaded: true,
-        entities: filter(usuarios, predicate)
+        entities: filter(facts, predicate)
     })),
-    
-
-    // on(loadUsers, (state, {usuarios, predicate }) => {
-    //     return { ...state, first: predicate };
-    //   }),
-
 
   );
 
 
-const _usuariosReducer = createReducer(usuariosInitialState,
+const _factsReducer = createReducer(usuariosInitialState,
 
-    on( cargarUsuarios, state => ({ ...state, loading: true })),
+    on( cargarFacts, state => ({ ...state, loading: true })),
 
-    on( cargarUsuariosSuccess, (state, { usuarios }) => ({ 
+    on( cargarFactsSuccess, (state, { facts }) => ({ 
         ...state, 
         loading: false,
         loaded: true,
-        users: [ ...usuarios ] 
+        users: [ ...facts ] 
     })),
 
-    on( cargarUsuariosError, (state, { payload }) => ({ 
+    on( cargarFactsError, (state, { payload }) => ({ 
         ...state, 
         loading: false,
         loaded: false,
@@ -81,18 +73,10 @@ const _usuariosReducer = createReducer(usuariosInitialState,
         }
     })),
 
-    on( filtrarUsuariosSuccess, (state, { key, usuarios }) => ({ 
-        ...state, 
-        loading: false,
-        loaded: true,
-        users: [ ...usuarios ] ,
-        keys: key
-    })),
-
 );
 
-export function usuariosReducer(state, action) {
-    return _usuariosReducer(state, action);
+export function factsReducer(state, action) {
+    return _factsReducer(state, action);
 }
 
 
@@ -101,15 +85,11 @@ export function entityReducer(state, action) {
 }
 
 
-function filter(usuarios: any, predicate) {
-
+function filter(facts: any, predicate) {
    var resultEntity : any;
-
    var results: string[]; 
    var arrayresults= new Array(); 
-//    results = usuarios.find(t => t.user.name.first === 'Kasimir' );
-
-   results = usuarios.find(item => {
+   results = facts.find(item => {
     if (item.user == null) {
         return;
       }
@@ -126,11 +106,7 @@ function filter(usuarios: any, predicate) {
     }
   }
   });
-
    results = arrayresults;
    resultEntity = results;
-   console.log(usuarios);
-   console.log(predicate);
-   console.log(results);
    return( resultEntity);
 }
